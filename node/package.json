@@ -1,14 +1,16 @@
 {
-  "name": "node",
+  "name": "new-project",
   "version": "1.0.0",
-  "description": "",
   "main": "script.js",
   "scripts": {
-    "start": "nodemon script"
+    "start": "nodemon script",
+    "create-some-folder": "mkdir some && cd some && mkdir other"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.21"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
