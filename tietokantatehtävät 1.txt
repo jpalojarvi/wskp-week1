@@ -30,7 +30,7 @@ ON tyontekija.Postino = postitus.Postinumero
 WHERE postitus.Postitoimipaikka = 'Espoo' AND tyontekija.Palkka > 5400
 
 Tehtävä 6.
-SELECT DISTINCT *
+SELECT DISTINCT Etunimi, Merkki
 FROM tyontekija
 LEFT JOIN auto
 ON auto.Haltija = tyontekija.Numero
@@ -56,10 +56,17 @@ GROUP BY tyontekija.numero
 HAVING COUNT(*) >= 2
 
 Tehtävä 10.
-SELECT tyontekija.Etunimi, tyontekija.Sukunimi
+(((SELECT tyontekija.Etunimi, tyontekija.Sukunimi
 FROM tyontekija
 ORDER BY tyontekija.Palkka DESC
-LIMIT 1;
+LIMIT 1;)))
+
+SELECT tyontekija.Etunimi, tyontekija.Sukunimi, tyontekija.Palkka
+FROM tyontekija
+WHERE Palkka = (
+    SELECT MAX(Palkka)
+    FROM tyontekija
+)
 
 Tehtävä 11.
 SELECT osasto.Nimi
@@ -75,3 +82,20 @@ ON tyontekija.Osasto = osasto.Numero
 WHERE tyontekija.Etunimi = 'Leevi'
 
 Tehtävä 12.
+SELECT Numero, Etunimi, Sukunimi, osasto, COUNT(*)
+FROM (
+SELECT Numero, Etunimi, Sukunimi, osasto
+FROM tyontekija
+WHERE Etunimi = 'Lempi'
+UNION ALL
+SELECT DISTINCT Numero, Etunimi, Sukunimi, osasto
+FROM tyontekija INNER JOIN auto
+ON tyontekija.Numero = auto.Haltija
+UNION ALL 
+SELECT tyontekija.numero, Etunimi, Sukunimi, osasto
+FROM tyontekija INNER JOIN osasto
+ON tyontekija.Osasto = osasto.Numero
+WHERE osasto.Nimi = 'Laskutus'
+) AS t
+GROUP BY numero
+ORDER BY COUNT(*) DESC;
